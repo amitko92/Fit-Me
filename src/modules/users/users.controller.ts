@@ -1,5 +1,7 @@
-import { Controller, Post } from "@nestjs/common";
+import { Body, Controller, Post, ValidationPipe } from "@nestjs/common";
 import { UsersService } from "./users.service";
+import { SignUpDto } from "./dtos/sign-up.dto";
+import { SignInDto } from "./dtos/sign-in.dto";
 
 
 
@@ -10,14 +12,14 @@ export class UsersController {
 
 
     @Post('/sign-up')
-    register(): string {
+    signUp(@Body(ValidationPipe) signUpDto: SignUpDto): string {
 
-        return this.usersService.signUp();
+        return this.usersService.signUp(signUpDto);
     }
 
     @Post('/sign-in')
-    signin(): string {
+    signin(@Body(ValidationPipe) signIpDto: SignInDto): string {
 
-        return this.usersService.signIn();
+        return this.usersService.signIn(signIpDto);
     }
 }
