@@ -6,7 +6,12 @@ import { Injectable } from "@nestjs/common";
 export class UsersService {
 
 
-    getHello(): string {
-        return 'UsersService Hello World!!';
+
+    signUp(): string {
+        return 'sign-up';
+    }
+
+    signIn(): string {
+        return 'sign-in';
     }
 }
