@@ -4,6 +4,7 @@ export class SignInDto {
 
     @IsString()
     @IsEmail()
+    @IsNotEmpty()
     email: string;
 
     @IsString()

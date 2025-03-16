@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { SignUpDto } from "./dtos/sign-up.dto";
@@ -21,7 +21,7 @@ export class UsersService {
         }
 
         // 2. check if the user(email) already exists in the database.
-        const existsUser = await this.userModel.findOne({email: signUpDto.email});
+        const existsUser = await this.findOneByEmail(signUpDto.email);
         
         if(existsUser) {
             throw new Error('user already exists');
@@ -41,5 +41,33 @@ export class UsersService {
 
     signIn(signIpDto: SignInDto): string {
         return 'sign-in';
+    }
+
+    async findOneByEmail(email: string): Promise<User | null> {
+        
+        const existsUser = await this.userModel.findOne({email: email});
+
+        if(!existsUser) {
+            return null;
+        }
+
+        return existsUser;
+    }
+
+    async validateUser(signInDto: SignInDto): Promise<User> {
+/*
+        const user = await this.findOneByEmail(signInDto.email);
+        if (user && await bcrypt.compare(signInDto.password, user.password)) {
+            return user;
+        }
+*/
+
+        const existsUser = await this.userModel.findOne({email: signInDto.email, password: signInDto.password});
+
+        if(!existsUser) {
+            throw new UnauthorizedException();
+        }
+
+        return existsUser;
     }
 }
