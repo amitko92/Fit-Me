@@ -1,5 +1,5 @@
 // filepath: c:\Users\amitk\Documents\visual studio code\fit-me-backend\src\auth\auth.service.ts
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { SignInDto } from '../users/dtos/sign-in.dto';
@@ -20,6 +20,7 @@ export class AuthService {
   async signIn(signInDto: SignInDto): Promise<{ accessToken: string }> {
 
     const user = await this.usersService.validateUser(signInDto);
+    
     const payload: JwtPayload = {
       firstName: user.firstName,
       lastName: user.lastName,
@@ -29,6 +30,7 @@ export class AuthService {
     };
 
     const accessToken = this.jwtService.sign(payload);
+    
     return { accessToken };
   }
 
@@ -36,14 +38,14 @@ export class AuthService {
 
     // 1. validate the user data.
     if (signUpDto.password !== signUpDto.confirmPassword) {
-      throw new Error('passwords do not match');
+      throw new ConflictException('passwords do not match');
     }
 
     // 2. check if the user(email) already exists in the database.
     const existsUser = await this.usersService.findOneByEmail(signUpDto.email);
 
     if (existsUser) {
-      throw new Error('user already exists');
+      throw new ConflictException('user already exists');
     }
 
     // 3. create the iniall data of the new user.

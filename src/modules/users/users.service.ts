@@ -33,6 +33,13 @@ export class UsersService {
         return existsUser;
     }
 
+    /**
+     * retur the user if the user exists in the 
+     * database or throw UnauthorizedException.
+     * @param signInDto 
+     * @returns User
+     * @throws UnauthorizedException if the user does not exist.
+     */
     async validateUser(signInDto: SignInDto): Promise<User> {
 
         // TODO - Implement bcrypt
