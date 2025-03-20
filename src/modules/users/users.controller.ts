@@ -13,18 +13,6 @@ export class UsersController {
     constructor(private readonly usersService: UsersService) { }
 
 
-    @Post('/sign-up')
-    signUp(@Body(ValidationPipe) signUpDto: SignUpDto): Promise<User> {
-
-        return this.usersService.signUp(signUpDto);
-    }
-
-    @Post('/sign-in')
-    signin(@Body(ValidationPipe) signIpDto: SignInDto): string {
-
-        return this.usersService.signIn(signIpDto);
-    }
-
     @UseGuards(AuthGuard('jwt'))
     @Post('/protected')
     protectedRoute(): string {
