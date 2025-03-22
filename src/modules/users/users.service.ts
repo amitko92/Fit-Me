@@ -1,11 +1,9 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
-import { SignUpDto } from "./dtos/sign-up.dto";
 import { SignInDto } from "./dtos/sign-in.dto";
 import { User } from "src/schemas/user.schema";
 import {User as UserEntity} from '../../entities/user';
-import * as moment from "moment"; 
 
 
 
@@ -17,9 +15,16 @@ export class UsersService {
 
     async saveUser(user: UserEntity): Promise<User> {
         
-        const newUser = new this.userModel(user);
+        try {
 
-        return await newUser.save();
+            const newUser = new this.userModel(user);
+    
+            return await newUser.save();
+        } catch (error) {
+
+            console.log(error);
+            throw error;
+        }
     }
 
     async findOneByEmail(email: string): Promise<User | null> {
@@ -40,7 +45,7 @@ export class UsersService {
      * @returns User
      * @throws UnauthorizedException if the user does not exist.
      */
-    async validateUser(signInDto: SignInDto): Promise<User> {
+    async validateUser(signInDto: SignInDto): Promise<UserEntity> {
 
         // TODO - Implement bcrypt
         /* 
@@ -56,6 +61,17 @@ export class UsersService {
             throw new UnauthorizedException();
         }
 
-        return existsUser;
+        const userEntity = new UserEntity(
+            existsUser.firstName, 
+            existsUser.lastName, 
+            existsUser.email, 
+            existsUser.password, 
+            existsUser.creationDate, 
+            existsUser.birthDate,
+            existsUser.gender,
+            existsUser._id.toHexString()
+        );
+
+        return userEntity;
     }
 }

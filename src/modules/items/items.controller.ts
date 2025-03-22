@@ -1,7 +1,7 @@
-import { Controller, Post, UseGuards } from "@nestjs/common";
+import { Controller, Post, UseGuards, Request } from "@nestjs/common";
 import { ItemsService } from "./items.service";
 import { AuthGuard } from "@nestjs/passport";
-
+import { JwtPayload } from "../auth/interfaces/jwt-payload.interface";
 
 @Controller('/api/items')
 export class ItemController {
@@ -11,9 +11,12 @@ export class ItemController {
 
     @UseGuards(AuthGuard('jwt'))
     @Post('/add-one')
-    addOne(): string {
+    addOne(@Request() req): string {
 
-        return this.itemService.addOne();
+        const user: JwtPayload = req.user; // Access the user details from the request object
+        
+
+        return this.itemService.addOne() + " " + user.id;
     }
 
 

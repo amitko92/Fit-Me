@@ -1,10 +1,9 @@
-// filepath: c:\Users\amitk\Documents\visual studio code\fit-me-backend\src\auth\auth.service.ts
 import { ConflictException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { SignInDto } from '../users/dtos/sign-in.dto';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
-import moment from 'moment';
+import * as moment from 'moment';
 import { SignUpDto } from '../users/dtos/sign-up.dto';
 import { User } from 'src/schemas/user.schema';
 import { User as UserEntity } from '../../entities/user';
@@ -22,11 +21,14 @@ export class AuthService {
     const user = await this.usersService.validateUser(signInDto);
     
     const payload: JwtPayload = {
+      id: user.id,
       firstName: user.firstName,
       lastName: user.lastName,
       birthDate: user.birthDate,
       creationDate: user.creationDate,
-      email: user.email
+      email: user.email,
+      exp: 0,
+      iat: 0,
     };
 
     const accessToken = this.jwtService.sign(payload);
@@ -58,7 +60,9 @@ export class AuthService {
       signUpDto.email,
       signUpDto.password,
       creationDate,
-      signUpDto.birthDate
+      signUpDto.birthDate,
+      signUpDto.gender,
+      '-1'
     );
     
     // saveUser
