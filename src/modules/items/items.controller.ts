@@ -10,8 +10,25 @@ export class ItemController {
 
 
     @UseGuards(AuthGuard('jwt'))
-    @Post('/protected')
-    protectedRoute(): string {
-        return 'This is a protected route';
+    @Post('/add-one')
+    addOne(): string {
+
+        return this.itemService.addOne();
+    }
+
+
+    @UseGuards(AuthGuard('jwt'))
+    @Post('/get')
+    get(): string {
+
+        return this.itemService.get();
+    }
+
+
+    @UseGuards(AuthGuard('jwt'))
+    @Post('/get-one')
+    getOne(): string {
+
+        return this.itemService.getOne();
     }
 }

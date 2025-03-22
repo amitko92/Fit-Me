@@ -11,6 +11,19 @@ export class ItemsService {
 
     constructor(@InjectModel(Item.name) private userModel: Model<Item>) {}
 
+    addOne(): string{
 
+        return 'addOne';
+    }
+
+    getOne(): string{
+
+        return 'getOne';
+    }
+
+    get(): string{
+
+        return 'get';
+    }
  
 }
