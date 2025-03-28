@@ -1,11 +1,12 @@
-import { IsArray, IsNotEmpty, IsString } from "class-validator";
+import { IsArray, IsNotEmpty, IsObject, IsString } from "class-validator";
+import { ImageBase64 } from "src/entities/ImageBase64";
 
 export class AddOneDto {
 
 
-    @IsString()
+    @IsObject()
     @IsNotEmpty()
-    imageUrl: string;
+    imageBase64: ImageBase64;
 
     @IsString()
     @IsNotEmpty()
