@@ -5,6 +5,4 @@ export interface JwtPayload {
     birthDate: string;
     creationDate: string;
     email: string;
-    iat: number;
-    exp: number;
 }

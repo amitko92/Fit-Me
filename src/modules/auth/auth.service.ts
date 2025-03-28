@@ -27,8 +27,6 @@ export class AuthService {
       birthDate: user.birthDate,
       creationDate: user.creationDate,
       email: user.email,
-      exp: 0,
-      iat: 0,
     };
 
     const accessToken = this.jwtService.sign(payload);
