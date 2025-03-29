@@ -17,11 +17,17 @@ export class ItemController {
         @Body(ValidationPipe) addOneDto: AddOneDto
     ): string {
 
-        const user: JwtPayload = req.user; // Access the user details from the request object
+        try {
+            
+            const user: JwtPayload = req.user; // Access the user details from the request object
+            const response = this.itemService.addOne(user.id, addOneDto);
         
-        const log = addOneDto.description + ' ' + addOneDto.imageBase64.name + ' ' + addOneDto.itemType;
-        console.log(log);
-        return log;
+        } catch (error) {
+            
+            console.log("");
+        }
+        
+        return "";
     }
 
 
