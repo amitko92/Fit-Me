@@ -1,4 +1,5 @@
-import { IsArray, IsNotEmpty, IsObject, IsString } from "class-validator";
+import { IsArray, IsEnum, IsNotEmpty, IsObject, IsString } from "class-validator";
+import { ItemTypes } from "src/commens/enums/item-types.enum";
 import { ImageBase64 } from "src/entities/ImageBase64";
 
 export class AddOneDto {
@@ -10,23 +11,14 @@ export class AddOneDto {
 
     @IsString()
     @IsNotEmpty()
-    userId: string;
-
-    @IsString()
-    @IsNotEmpty()
     description: string;
 
-    @IsString()
-    @IsNotEmpty()
+    @IsArray()
     tags: string[];
 
-    @IsArray()
-    @IsNotEmpty()
-    itemTypeId: string[];
-
+    @IsEnum(ItemTypes)
     @IsString()
     @IsNotEmpty()
-    creationDate: string;
-
+    itemType: ItemTypes;
 
 }
