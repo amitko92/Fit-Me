@@ -3,6 +3,7 @@ import { ItemsService } from "./items.service";
 import { AuthGuard } from "@nestjs/passport";
 import { JwtPayload } from "../auth/interfaces/jwt-payload.interface";
 import { AddOneDto } from "./dtos/add-one.dto";
+import { AddOneError } from "./errors/add-one-error";
 
 @Controller('/api/items')
 export class ItemController {
@@ -23,8 +24,13 @@ export class ItemController {
             const response = this.itemService.addOne(user.id, addOneDto);
         
         } catch (error) {
+
+            if(error instanceof AddOneError) {
+
+                console.log("################ " + error.message);
+                throw error;
+            }
             
-            console.log("");
         }
         
         return "";
