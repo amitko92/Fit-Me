@@ -19,7 +19,9 @@ export class ItemController {
 
         const user: JwtPayload = req.user; // Access the user details from the request object
         
-        return addOneDto.description + ' ' + addOneDto.imageBase64.toString();
+        const log = addOneDto.description + ' ' + addOneDto.imageBase64.name + ' ' + addOneDto.itemType;
+        console.log(log);
+        return log;
     }
 
 
