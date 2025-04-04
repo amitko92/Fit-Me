@@ -28,9 +28,9 @@ export class ItemController {
             if(error instanceof AddOneError) {
 
                 console.log("################ " + error.message);
-                throw error;
             }
             
+            throw error;
         }
         
         return "";
