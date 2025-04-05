@@ -5,7 +5,7 @@ export class Item {
 
     @Prop({required: true})
     @Prop({unique: true})
-    imageUrl: string;
+    imageName: string;
 
     @Prop({required: true})
     userId: string;
@@ -17,7 +17,7 @@ export class Item {
     tags: string[];
 
     @Prop({unique: true})
-    itemTypeId: string[];
+    itemType: string[];
 
     @Prop({required: true})
     creationDate: string;

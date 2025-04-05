@@ -1,5 +1,5 @@
 import { Controller, Post, UseGuards, Request, Body, ValidationPipe } from "@nestjs/common";
-import { ItemsService } from "./items.service";
+import { AddOneResponse, ItemsService } from "./items.service";
 import { AuthGuard } from "@nestjs/passport";
 import { JwtPayload } from "../auth/interfaces/jwt-payload.interface";
 import { AddOneDto } from "./dtos/add-one.dto";
@@ -13,16 +13,18 @@ export class ItemController {
 
     @UseGuards(AuthGuard('jwt'))
     @Post('/add-one')
-    addOne(
+    async addOne(
         @Request() req,
         @Body(ValidationPipe) addOneDto: AddOneDto
-    ): string {
+    ): Promise<AddOneResponse> {
 
         try {
             
+
             const user: JwtPayload = req.user; // Access the user details from the request object
-            const response = this.itemService.addOne(user.id, addOneDto);
+            const response = await this.itemService.addOne(user.id, addOneDto);
         
+            return response;
         } catch (error) {
 
             if(error instanceof AddOneError) {
@@ -32,8 +34,6 @@ export class ItemController {
             
             throw error;
         }
-        
-        return "";
     }
 
 
