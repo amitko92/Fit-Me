@@ -33,21 +33,24 @@ export class ItemsService {
         const description = addOneDto.description;
         const name = imageBase64.name;
         
-        // TODO - Check if item type is valid.
+        // 1. Checking if data is valid.
+
+        // 1.1 Check if item type is valid.
         const isItemTypeValid = this.validateItemType(itemType);
 
         if (!isItemTypeValid) {
             throw new AddOneError('item type is invalid', AddOneErrorCode.INVALID_ITEM_TYPE);
         }
 
-        // TODO - Check if name is valid.
+        // 1.2 Check if name is valid.
         const isItemNameValid = this.validateItemName(name);
 
         if (!isItemNameValid) {
             throw new AddOneError('item name is invalid', AddOneErrorCode.INVALID_ITEM_TYPE);
         }
 
-        // TODO - Check if image is valid.
+        
+        // 1.3 Check if image is valid.
         if (imageBase64 === undefined || imageBase64 === null) {
             throw new AddOneError('image base64 is undefined or null', AddOneErrorCode.INVALID_IMAGE_BASE64);
         }
@@ -62,11 +65,14 @@ export class ItemsService {
             throw new AddOneError('image base64 content is undefined or null', AddOneErrorCode.INVALID_IMAGE_BASE64);
         }
 
+
+        // 2. Convert the base64 string to a buffer and save it to the server
         const buffer = await convertBase64ToImg(imageBase64);
 
         const fileName = await fileStorageManager.uploadFile(buffer, userId);
 
-        // result._id.toString()
+       
+        // 3. Creating the item entity.
         const itemEntity = new ItemEntity(
             '-1',
             fileName,
@@ -78,6 +84,7 @@ export class ItemsService {
             description,
         )
 
+        // 4. Saving the item to the database.
         const item = new this.itemModel(itemEntity);
         const result = await item.save();
 

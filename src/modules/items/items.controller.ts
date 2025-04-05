@@ -4,6 +4,7 @@ import { AuthGuard } from "@nestjs/passport";
 import { JwtPayload } from "../auth/interfaces/jwt-payload.interface";
 import { AddOneDto } from "./dtos/add-one.dto";
 import { AddOneError } from "./errors/add-one-error";
+import { GetItemsDto } from "./dtos/get-items-dto";
 
 @Controller('/api/items')
 export class ItemController {
@@ -39,7 +40,10 @@ export class ItemController {
 
     @UseGuards(AuthGuard('jwt'))
     @Post('/get')
-    get(): string {
+    get(
+        @Request() req,
+        @Body(ValidationPipe) getItemsDto: GetItemsDto
+    ): string {
 
         return this.itemService.get();
     }
